@@ -47,3 +47,32 @@ def get_new(item: any) -> any:
         if check_nesting(item):
             item = flatten(item)
     return item
+
+
+def flatten(item: list | dict) -> list | dict:
+    """
+    Flattens the given item.
+
+    Parameters
+    ----------
+    item
+        The item to be flattened.
+
+    Returns
+    ----------
+    A flattened item.
+    """
+    length = len(item)
+    if length == 0:
+        flattened = ""
+    elif length == 1:
+        if isinstance(item, list):
+            flattened = item[0]
+        elif isinstance(item, dict):
+            flattened = list(item.values())[0]
+    elif length > 1:
+        if isinstance(item, list):
+            flattened = [get_new(elem) for elem in item]
+        elif isinstance(item, dict):
+            flattened = list(item.values())
+    return flattened
