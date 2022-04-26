@@ -98,7 +98,7 @@ def _to_string(item: any) -> str:
     return item
 
 
-def dictppr(dictionary: dict) -> dict:
+def dictppr(dictionary: dict) -> str:
     """
     Flattens nested dictionaries.
 
@@ -113,4 +113,6 @@ def dictppr(dictionary: dict) -> dict:
     """
     dictionary = {key: _get_new(val) for key, val in dictionary.items()}
     dictionary = {key: _to_string(val) for key, val in dictionary.items()}
-    return dictionary
+    result = _get_new(dictionary)
+    result = _to_string(result)
+    return result
