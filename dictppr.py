@@ -76,3 +76,23 @@ def flatten(item: list | dict) -> list | dict:
         elif isinstance(item, dict):
             flattened = list(item.values())
     return flattened
+
+
+def to_string(item: any) -> str:
+    """
+    Converts the given item to a string.
+
+    Parameters
+    ----------
+    item
+        The item to be converted.
+
+    Returns
+    ----------
+    A converted item.
+    """
+    if isinstance(item, list):
+        item = ", ".join(map(lambda i: str(i), item))
+    else:
+        item = str(item)
+    return item
