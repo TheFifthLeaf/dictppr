@@ -96,3 +96,21 @@ def to_string(item: any) -> str:
     else:
         item = str(item)
     return item
+
+
+def dictppr(dictionary: dict) -> dict:
+    """
+    Flattens nested dictionaries.
+
+    Parameters
+    ----------
+    dictionary
+        A nested dictionary.
+
+    Returns
+    ----------
+    A flattened dictionary.
+    """
+    dictionary = {key: get_new(val) for key, val in dictionary.items()}
+    dictionary = {key: to_string(val) for key, val in dictionary.items()}
+    return dictionary
