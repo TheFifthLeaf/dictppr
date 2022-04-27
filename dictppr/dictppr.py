@@ -98,7 +98,7 @@ def string(item: any) -> str:
     return item
 
 
-def dictppr(dictionary: dict) -> str:
+def convert(dictionary: dict):
     """
     Flattens nested dictionaries.
 
@@ -113,6 +113,50 @@ def dictppr(dictionary: dict) -> str:
     """
     dictionary = {key: check_item(val) for key, val in dictionary.items()}
     dictionary = {key: string(val) for key, val in dictionary.items()}
+    return dictionary
+
+
+def pprint(dictionary: dict) -> None:
+    """
+    Pretty prints flattened dictionary.
+
+    Parameters
+    ----------
+    dictionary
+        A nested dictionary.
+
+    Returns
+    ----------
+    None
+    """
+    dictionary = convert(dictionary)
+    max_key_len = max(map(len, dictionary.keys()))
+    for key, value in dictionary.items():
+        key_len, val_len = len(key), len(value)
+        if key_len < max_key_len:
+            key += " " * (max_key_len - key_len)
+        if val_len > 80:
+            space = "\n" + " " * (key_len + 4)
+            positions = list(range(50, val_len, 50))
+            for pos in sorted(positions, reverse=True):
+                value = value[:pos] + space + value[pos:]
+        print(f"{key} => {value}")
+
+
+def get(dictionary: dict) -> str:
+    """
+    Flatten and convert nested dictionary.
+
+    Parameters
+    ----------
+    dictionary
+        A nested dictionary.
+
+    Returns
+    ----------
+    Flattened and converted dictionary.
+    """
+    dictionary = convert(dictionary)
     result = check_item(dictionary)
     result = string(result)
     return result
