@@ -11,16 +11,16 @@ def check_nesting(items: list) -> int:
     ----------
     The number of nests remaining.
     """
-    count = 0
+    nests = 0
     for item in items:
         if isinstance(item, dict):
-            count += 1
+            nests += 1
         if isinstance(item, list):
-            count += check_nesting(item)
-    return count
+            nests += check_nesting(item)
+    return nests
 
 
-def get_new(item: any) -> any:
+def check_item(item: any) -> any:
     """
     Checks whether the given item
     is as flattened as possible.
@@ -32,12 +32,12 @@ def get_new(item: any) -> any:
 
     Returns
     ----------
-    New item.
+    Ensured item.
     """
     if isinstance(item, dict):
         keys = list(item.keys())
-        item = flatten(item)
-        item = get_new(item)
+        item = flattener(item)
+        item = check_item(item)
         if isinstance(item, list) and len(keys) > 1:
             if not check_nesting(item):
                 item = map(lambda k, i: f"{k}:{i}", keys, item)
@@ -45,11 +45,11 @@ def get_new(item: any) -> any:
                 item = list(item)
     elif isinstance(item, list):
         if check_nesting(item):
-            item = flatten(item)
+            item = flattener(item)
     return item
 
 
-def flatten(item: list | dict) -> list | dict:
+def flattener(item: any) -> any:
     """
     Flattens the given item.
 
@@ -72,13 +72,13 @@ def flatten(item: list | dict) -> list | dict:
             flattened = list(item.values())[0]
     elif length > 1:
         if isinstance(item, list):
-            flattened = [get_new(elem) for elem in item]
+            flattened = [check_item(elem) for elem in item]
         elif isinstance(item, dict):
             flattened = list(item.values())
     return flattened
 
 
-def to_string(item: any) -> str:
+def string(item: any) -> str:
     """
     Converts the given item to a string.
 
@@ -111,8 +111,8 @@ def dictppr(dictionary: dict) -> str:
     ----------
     A flattened dictionary.
     """
-    dictionary = {key: get_new(val) for key, val in dictionary.items()}
-    dictionary = {key: to_string(val) for key, val in dictionary.items()}
-    result = get_new(dictionary)
-    result = to_string(result)
+    dictionary = {key: check_item(val) for key, val in dictionary.items()}
+    dictionary = {key: string(val) for key, val in dictionary.items()}
+    result = check_item(dictionary)
+    result = string(result)
     return result
