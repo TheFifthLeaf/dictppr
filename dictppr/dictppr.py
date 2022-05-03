@@ -130,6 +130,9 @@ def pprint(dictionary: dict) -> None:
     None
     """
     dictionary = convert(dictionary)
+    if not dictionary:
+        print("")
+        return None
     max_key_len = max(map(len, dictionary.keys()))
     for key, value in dictionary.items():
         key_len, val_len = len(key), len(value)
