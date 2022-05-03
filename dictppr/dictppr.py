@@ -138,6 +138,7 @@ def pprint(dictionary: dict) -> None:
         key_len, val_len = len(key), len(value)
         if key_len < max_key_len:
             key += " " * (max_key_len - key_len)
+            key_len = len(key)
         if val_len > 80:
             space = "\n" + " " * (key_len + 4)
             positions = list(range(50, val_len, 50))
